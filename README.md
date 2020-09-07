@@ -1,4 +1,4 @@
-#QuickPoll
+#Polls9JA
 
 ##A survey solution that aggregates opinion or responses based on subject matters
 

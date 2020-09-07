@@ -21,7 +21,6 @@ public class ComputeResultController {
 	//@Inject
 	@Autowired
 	private VoteRepository voteRepository;
-
 	
 	@RequestMapping(value="/computeresult", method=RequestMethod.GET)
 	public ResponseEntity<?> computeResult(@RequestParam Long pollId) {
