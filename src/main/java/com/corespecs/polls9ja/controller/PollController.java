@@ -6,6 +6,7 @@ import java.util.Optional;
 import javax.inject.Inject;
 
 import com.corespecs.polls9ja.domain.Poll;
+import com.corespecs.polls9ja.exception.ResourceNotFoundException;
 import com.corespecs.polls9ja.respository.springdatajpa.PollRepository;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -43,12 +44,14 @@ public class PollController {
 
 	@RequestMapping(value="/polls/{pollId}", method=RequestMethod.GET)
 	public ResponseEntity<?> getPoll(@PathVariable Long pollId) {
+		verifyPoll(pollId);
 		Optional<Poll> p = pollRepository.findById(pollId);
 		return new ResponseEntity<> (p, HttpStatus.OK);
 	}
 	
 	@RequestMapping(value="/polls/{pollId}", method=RequestMethod.PUT)
 	public ResponseEntity<?> updatePoll(@RequestBody Poll poll, @PathVariable Long pollId) {
+		verifyPoll(pollId);
 		// Save the entity
 		Poll p = pollRepository.save(poll);
 		return new ResponseEntity<>(HttpStatus.OK);
@@ -56,8 +59,17 @@ public class PollController {
 	
 	@RequestMapping(value="/polls/{pollId}", method=RequestMethod.DELETE)
 	public ResponseEntity<?> deletePoll(@PathVariable Long pollId) {
+		verifyPoll(pollId);
 		pollRepository.deleteById(pollId);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
-	
+
+	protected void verifyPoll(Long pollId) throws ResourceNotFoundException {
+		Optional<Poll> poll = pollRepository.findById(pollId);
+		if(poll == null) {
+			throw new ResourceNotFoundException("Poll with id " + pollId + " not found");
+		}
+	}
+
+
 }
