@@ -5,6 +5,8 @@ import org.hibernate.annotations.GenericGenerator;
 import java.util.Set;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 @Entity(name = "Poll")
 @Table(name = "poll")
@@ -18,11 +20,13 @@ public class Poll {
     private Long id;
 
     @Column(name="QUESTION")
+    @NotEmpty
     private String question;
 
     @OneToMany(cascade=CascadeType.ALL)
     @JoinColumn(name="POLL_ID")
     @OrderBy
+    @Size(min=2, max = 6)
     private Set<Option> options;
 
     public Long getId() {

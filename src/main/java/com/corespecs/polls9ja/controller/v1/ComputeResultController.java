@@ -1,12 +1,11 @@
-package com.corespecs.polls9ja.controller;
-
-import java.util.HashMap;
-import java.util.Map;
+package com.corespecs.polls9ja.controller.v1;
 
 import com.corespecs.polls9ja.domain.Vote;
 import com.corespecs.polls9ja.dto.OptionCount;
 import com.corespecs.polls9ja.dto.VoteResult;
 import com.corespecs.polls9ja.respository.springdatajpa.VoteRepository;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +14,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController
+import java.util.HashMap;
+import java.util.Map;
+
+@RestController("computeResultControllerV1")
+@RequestMapping("/v1/")
+@Api(value = "computeresult", tags = "Compute Results API")
 public class ComputeResultController {
 	
 	//@Inject
@@ -23,6 +27,7 @@ public class ComputeResultController {
 	private VoteRepository voteRepository;
 	
 	@RequestMapping(value="/computeresult", method=RequestMethod.GET)
+	@ApiOperation(value = "Computes the results of a given Poll", response = VoteResult.class)
 	public ResponseEntity<?> computeResult(@RequestParam Long pollId) {
 		VoteResult voteResult = new VoteResult();
 		Iterable<Vote> allVotes = voteRepository.findByPoll(pollId);
