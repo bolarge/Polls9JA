@@ -20,6 +20,7 @@ package com.corespecs.polls9ja.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
@@ -36,23 +37,60 @@ import java.util.Collections;
  * @author Bolaji Salau
  *
  */
-
 @Configuration
 @EnableSwagger2
 @ComponentScan(basePackages="com.corespecs.polls9ja")
 public class Swagger {
 
+/*	@Bean
+	public Docket swaggerPersonApi12() {
+		return new Docket(DocumentationType.SWAGGER_2)
+				.groupName("person-api-1.2")
+				.select()
+				.apis(RequestHandlerSelectors.basePackage("pl.piomin.services.versioning.controller"))
+				.paths(regex("/person/v1.2.*"))
+				.build()
+				.apiInfo(new ApiInfoBuilder().version("1.2").title("Person API").description("Documentation Person API v1.2").build());
+	}*/
+
    @Bean
-   public Docket customDocket(){
+   public Docket poll9jaApi1(){
       return new Docket(DocumentationType.SWAGGER_2)
-    		  .select()
+			  .groupName("v1")
+			  .select()
               //.apis(RequestHandlerSelectors.any())
               //.paths(PathSelectors.any())
 			  .apis(RequestHandlerSelectors.basePackage("com.corespecs.polls9ja"))
-			  .paths(PathSelectors.ant("/v2/**"))
+			  .paths(PathSelectors.ant("/v1/**"))
               .build()
               .apiInfo(getApiInfo());
    }
+
+	@Bean
+	public Docket poll9jaApi2(){
+		return new Docket(DocumentationType.SWAGGER_2)
+				.groupName("v2")
+				.select()
+				//.apis(RequestHandlerSelectors.any())
+				//.paths(PathSelectors.any())
+				.apis(RequestHandlerSelectors.basePackage("com.corespecs.polls9ja"))
+				.paths(PathSelectors.ant("/v2/**"))
+				.build()
+				.apiInfo(getApiInfo());
+	}
+
+	@Bean
+	public Docket poll9jaApi3(){
+		return new Docket(DocumentationType.SWAGGER_2)
+				.groupName("v3")
+				.select()
+				//.apis(RequestHandlerSelectors.any())
+				//.paths(PathSelectors.any())
+				.apis(RequestHandlerSelectors.basePackage("com.corespecs.polls9ja"))
+				.paths(PathSelectors.ant("/v3/**"))
+				.build()
+				.apiInfo(getApiInfo());
+	}
 
 	private ApiInfo getApiInfo() {
 		return new ApiInfo(
