@@ -45,12 +45,6 @@ public class PollController {
 		return new ResponseEntity<>(null, responseHeaders, HttpStatus.CREATED);
 	}
 
-	/*@RequestMapping(value="/polls", method=RequestMethod.GET)
-	@ApiOperation(value = "Retrieves all the polls", response=Poll.class, responseContainer="List")
-	public ResponseEntity<Iterable<Poll>> getAllPolls() {
-		Iterable<Poll> allPolls = pollRepository.findAll();
-		return new ResponseEntity<>(allPolls, HttpStatus.OK);
-	}*/
 	@RequestMapping(value="/polls", method=RequestMethod.GET)
 	@ApiOperation(value = "Retrieves all the polls", response=Poll.class, responseContainer="List")
 	public ResponseEntity<Page<Poll>> getAllPolls(Pageable pageable) {

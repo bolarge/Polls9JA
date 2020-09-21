@@ -119,4 +119,7 @@ insert into polls9ja.users (user_id, username, password, first_name, last_name, 
 insert into polls9ja.users (user_id, username, password, first_name, last_name, admin) values (5, 'clarabelle', '$2a$10$cuTJd2ayEwXfsPdoF5/hde6gzsPx/gEiv8LZsjPN9VPoN5XVR8cKW', 'Clarabelle', 'Cow', 'no');
 insert into polls9ja.users (user_id, username, password, first_name, last_name, admin) values (6, 'admin', '$2a$10$JQOfG5Tqnf97SbGcKsalz.XpDQbXi1APOf2SHPVW27bWNioi9nI8y', 'Super', 'Admin', 'yes');
 
+INSERT IGNORE INTO roles (role, user_id) VALUES ('ROLE_POLL-ADMIN', 5);
+INSERT IGNORE INTO roles (role, user_id) VALUES ('ROLE_ADMIN', 6);
+
 

@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -22,7 +23,7 @@ import java.net.URI;
 import java.util.Optional;
 
 @RestController("pollControllerV3")
-@RequestMapping("/v3/")
+@RequestMapping({"/v3/", "/oauth2/v3/"})
 @Api(value = "polls", tags = "Poll API")
 public class PollController {
 
@@ -72,23 +73,23 @@ public class PollController {
 	@ApiOperation(value = "Updates given Poll", response=Void.class)
 	@ApiResponses(value = {@ApiResponse(code=200, message="", response=Void.class),
 			@ApiResponse(code=404, message="Unable to find Poll", response=ErrorDetail.class) } )
-	public ResponseEntity<?> updatePoll(@RequestBody Poll poll, @PathVariable Long pollId) {
+	public ResponseEntity<Void> updatePoll(@RequestBody Poll poll, @PathVariable Long pollId) {
 		verifyPoll(pollId);
 		// Save the entity
 		Poll p = pollRepository.save(poll);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
-	
+
+	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	@RequestMapping(value="/polls/{pollId}", method=RequestMethod.DELETE)
 	@ApiOperation(value = "Deletes given Poll", response=Void.class)
 	@ApiResponses(value = {@ApiResponse(code=200, message="", response=Void.class),
 			@ApiResponse(code=404, message="Unable to find Poll", response=ErrorDetail.class) } )
-	public ResponseEntity<?> deletePoll(@PathVariable Long pollId) {
+	public ResponseEntity<Void> deletePoll(@PathVariable Long pollId) {
 		verifyPoll(pollId);
 		pollRepository.deleteById(pollId);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
-
 	protected void verifyPoll(Long pollId) throws ResourceNotFoundException {
 		Optional<Poll> poll = pollRepository.findById(pollId);
 		if(poll == null) {
